@@ -76,3 +76,5 @@ include ':firebase-auth-core'
 
 include ':play-services-core:microg-ui-tools' // Legacy
 include ':play-services-core'
+
+include ':hz_snow_ui_lib'

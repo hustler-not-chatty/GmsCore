@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:id="@+id/snowUICoordinatorLayout">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/snowUIAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            app:forceApplySystemWindowInsetTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:id="@+id/snowUICollapsingToolbarLayout"
+            android:clipToPadding="false"
+            app:extraMultilineHeightEnabled="true"
+            app:layout_scrollFlags="exitUntilCollapsed|snap|scroll"
+            style="?attr/collapsingToolbarLayoutLargeStyle"
+            app:maxLines="3"
+
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarTitle.Collapsed"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarTitle.Expanded"
+            app:expandedTitleMarginStart="@dimen/expanded_title_margin_start"
+            app:expandedTitleMarginEnd="@dimen/expanded_title_margin_end"
+            app:toolbarId="@id/snowUIToolbar">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/snowUIToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--
+    NOTE! layout_height cannot be match_parent!
+    Layout inspector suggests that this FrameLayout stretches below screen border, regardless the content
+    this + scrollable content = toolbar unexpectedly collapses.
+    -->
+    <FrameLayout
+        android:id="@+id/snowUIFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="false"
+        android:clipChildren="false"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
