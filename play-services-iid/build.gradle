@@ -25,10 +25,12 @@ dependencies {
     api project(':play-services-iid-api')
 
     // Dependencies from play-services-iid:17.0.0
-    api "androidx.collection:collection:1.0.0"
-    api "androidx.core:core:1.0.0"
+    api "androidx.collection:collection:$collectionVersion"
+    api "androidx.core:core:$coreVersion"
     api project(':play-services-base')
     api project(':play-services-basement')
     //api project(':play-services-stats')
     api project(':play-services-tasks')
+
+    api "androidx.legacy:legacy-support-core-utils:1.0.0"
 }
