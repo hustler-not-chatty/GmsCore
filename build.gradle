@@ -31,13 +31,13 @@ buildscript {
     ext.volleyVersion = '1.2.1'
     ext.wireVersion = '4.4.1'
 
-    ext.androidBuildGradleVersion = '7.2.1'
+    ext.androidBuildGradleVersion = '7.2.2'
 
     ext.androidBuildVersionTools = '33.0.0'
 
     ext.androidMinSdk = 14
     ext.androidTargetSdk = 29
-    ext.androidCompileSdk = 31
+    ext.androidCompileSdk = 32
 
     repositories {
         mavenCentral()
