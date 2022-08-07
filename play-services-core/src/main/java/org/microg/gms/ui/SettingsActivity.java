@@ -27,9 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
         NearbyPreferencesIntegration.Companion.preProcessSettingsIntent(intent);
 
         setContentView(R.layout.settings_root_activity);
-
-        appBarConfiguration = new AppBarConfiguration.Builder(getNavController().getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, getNavController(), appBarConfiguration);
     }
 
     @Override

@@ -117,7 +117,7 @@
         android:icon="@mipmap/ic_core_service_app"
         android:label="@string/gms_app_name"
         android:multiArch="true"
-        android:theme="@style/SnowUI.Base">
+        android:theme="@style/SnowUI.SettingsBase.NoActionBar">
 
         <library android:name="com.google.android.gms" />
 
