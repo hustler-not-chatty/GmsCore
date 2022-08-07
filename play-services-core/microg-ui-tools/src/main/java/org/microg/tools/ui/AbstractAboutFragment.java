@@ -29,8 +29,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public abstract class AbstractAboutFragment extends Fragment {
     }
 
     protected String getAppName() {
-        return getAppName(getContext());
+        return getAppName(requireContext());
     }
 
     public static String getLibVersion(String packageName) {
@@ -82,7 +83,7 @@ public abstract class AbstractAboutFragment extends Fragment {
     }
 
     protected String getSelfVersion() {
-        return getSelfVersion(getContext());
+        return getSelfVersion(requireContext());
     }
 
     protected String getSummary() {
@@ -93,7 +94,7 @@ public abstract class AbstractAboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View aboutRoot = inflater.inflate(R.layout.about_root, container, false);
-        ((ImageView) aboutRoot.findViewById(android.R.id.icon)).setImageDrawable(getIcon(getContext()));
+        ((ImageView) aboutRoot.findViewById(android.R.id.icon)).setImageDrawable(getIcon(requireContext()));
         ((TextView) aboutRoot.findViewById(android.R.id.title)).setText(getAppName());
         ((TextView) aboutRoot.findViewById(R.id.about_version)).setText(getString(R.string.about_version_str, getSelfVersion()));
         String summary = getSummary();
@@ -105,23 +106,49 @@ public abstract class AbstractAboutFragment extends Fragment {
         List<Library> libraries = new ArrayList<Library>();
         collectLibraries(libraries);
         Collections.sort(libraries);
-        ((ListView) aboutRoot.findViewById(android.R.id.list)).setAdapter(new LibraryAdapter(getContext(), libraries.toArray(new Library[libraries.size()])));
+        ((RecyclerView) aboutRoot.findViewById(android.R.id.list)).setAdapter(new LibraryRecyclerAdapter(libraries.toArray(new Library[libraries.size()])));
 
         return aboutRoot;
     }
 
-    private class LibraryAdapter extends ArrayAdapter<Library> {
+    private class LibraryRecyclerAdapter extends RecyclerView.Adapter<LibraryRecyclerAdapter.ViewHolder> {
+        private final Library[] mLibraries;
 
-        public LibraryAdapter(Context context, Library[] libraries) {
-            super(context, android.R.layout.simple_list_item_2, android.R.id.text1, libraries);
+        public LibraryRecyclerAdapter(Library[] libraries) {
+            mLibraries = libraries;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            final View v = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, parent, false);
+            return new ViewHolder(v);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
-            ((TextView) v.findViewById(android.R.id.text1)).setText(getString(R.string.about_name_version_str, getItem(position).name, getLibVersion(getItem(position).packageName)));
-            ((TextView) v.findViewById(android.R.id.text2)).setText(getItem(position).copyright != null ? getItem(position).copyright : getString(R.string.about_default_license));
-            return v;
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.text1.setText(getString(R.string.about_name_version_str, getItem(position).name, getLibVersion(getItem(position).packageName)));
+            holder.text2.setText(getItem(position).copyright != null ? getItem(position).copyright : getString(R.string.about_default_license));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mLibraries.length;
+        }
+
+        private Library getItem(int position) {
+            return mLibraries[position];
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            private final TextView text1;
+            private final TextView text2;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                text1 = itemView.findViewById(android.R.id.text1);
+                text2 = itemView.findViewById(android.R.id.text2);
+            }
         }
     }
 
@@ -136,6 +163,7 @@ public abstract class AbstractAboutFragment extends Fragment {
             this.copyright = copyright;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return name + ", " + copyright;
