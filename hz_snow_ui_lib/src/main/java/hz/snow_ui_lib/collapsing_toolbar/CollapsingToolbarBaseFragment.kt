@@ -1,20 +1,20 @@
 package hz.snow_ui_lib.collapsing_toolbar
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.appbar.AppBarLayout
 import hz.settingslib.databinding.BaseActivityCollapsingToolbarBinding
 
-open class CollapsingToolbarBaseFragment: Fragment() {
+open class CollapsingToolbarBaseFragment(val fragment: Fragment? = null) : Fragment() {
+    constructor(resInt: Int) : this(null) {
+        this.resInt = resInt
+    }
+
+    private var containingFragment: Fragment? = fragment
+    private var resInt = 0
     private var binding: BaseActivityCollapsingToolbarBinding? = null
 
     var toolbar
@@ -35,20 +35,28 @@ open class CollapsingToolbarBaseFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BaseActivityCollapsingToolbarBinding.inflate(inflater, container, false)
-        // disables scrolling behaviour for CollapsingToolbarLayout
-        val params = binding!!.snowUIAppBarLayout.layoutParams as CoordinatorLayout.LayoutParams
-        val behaviour = AppBarLayout.Behavior()
-        behaviour.setDragCallback(object: AppBarLayout.Behavior.DragCallback() {
-            override fun canDrag(appBarLayout: AppBarLayout): Boolean = false
-        })
-        params.behavior = behaviour
-        val clientView = this.onCreateContentView(inflater, binding!!.snowUIFrameLayout, savedInstanceState)
-        if (clientView != null) binding!!.snowUIFrameLayout.addView(clientView)
+        binding = createBinding(inflater, container, false).apply {
+            val clientView = this@CollapsingToolbarBaseFragment.onCreateContentView(
+                inflater,
+                snowUIFrameLayout,
+                savedInstanceState
+            )
+            setupContentView(clientView)
+        }
         return binding!!.root
     }
 
-    open fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = null
+    open fun onCreateContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return if (resInt == 0) {
+            null
+        } else {
+            layoutInflater.inflate(resInt, container, false)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,5 +68,11 @@ open class CollapsingToolbarBaseFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    companion object {
+        @JvmStatic
+        fun asFragmentContainer(fragment: Fragment): CollapsingToolbarBaseFragment =
+            CollapsingToolbarBaseFragment(fragment)
     }
 }

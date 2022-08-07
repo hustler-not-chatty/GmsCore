@@ -1,11 +1,9 @@
 package hz.snow_ui_lib.collapsing_toolbar
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -30,20 +28,9 @@ open class CollapsingToolbarBaseActivity: BaseActivity() {
             super.setContentView(customLayoutResId)
             return
         }
-        binding = BaseActivityCollapsingToolbarBinding.inflate(layoutInflater).apply {
+        binding = createBinding(layoutInflater, null, false).apply {
             super.setContentView(root)
             setSupportActionBar(snowUIToolbar)
-            if (Build.VERSION.SDK_INT >= 23) {
-                this.snowUICollapsingToolbarLayout.lineSpacingMultiplier = TOOLBAR_LINE_SPACING_MULTIPLIER
-            }
-
-            // disables scrolling behaviour for CollapsingToolbarLayout
-            val params = snowUIAppBarLayout.layoutParams as CoordinatorLayout.LayoutParams
-            val behaviour = AppBarLayout.Behavior()
-            behaviour.setDragCallback(object: AppBarLayout.Behavior.DragCallback() {
-                override fun canDrag(appBarLayout: AppBarLayout): Boolean = false
-            })
-            params.behavior = behaviour
         }
     }
 
@@ -75,7 +62,4 @@ open class CollapsingToolbarBaseActivity: BaseActivity() {
         return true
     }
 
-    companion object {
-        const val TOOLBAR_LINE_SPACING_MULTIPLIER = 1.1f
-    }
 }
