@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import hz.settingslib.R
 import hz.settingslib.databinding.BaseActivityCollapsingToolbarBinding
 
-open class CollapsingToolbarBaseFragment(val fragment: Fragment? = null) : Fragment() {
-    constructor(resInt: Int) : this(null) {
-        this.resInt = resInt
+open class CollapsingToolbarBaseFragment(private val resInt: Int) : Fragment() {
+    constructor(content: Fragment) : this(0) {
+        contentFragment = content
     }
 
-    private var containingFragment: Fragment? = fragment
-    private var resInt = 0
+    constructor() : this(0)
+
+    private var contentFragment: Fragment? = null
     private var binding: BaseActivityCollapsingToolbarBinding? = null
 
     var toolbar
@@ -36,12 +38,9 @@ open class CollapsingToolbarBaseFragment(val fragment: Fragment? = null) : Fragm
         savedInstanceState: Bundle?
     ): View {
         binding = createBinding(inflater, container, false).apply {
-            val clientView = this@CollapsingToolbarBaseFragment.onCreateContentView(
-                inflater,
-                snowUIFrameLayout,
-                savedInstanceState
-            )
-            setupContentView(clientView)
+            if (contentFragment == null) {
+                setupContentView(onCreateContentView(inflater, container, savedInstanceState))
+            }
         }
         return binding!!.root
     }
@@ -52,7 +51,7 @@ open class CollapsingToolbarBaseFragment(val fragment: Fragment? = null) : Fragm
         savedInstanceState: Bundle?
     ): View? {
         return if (resInt == 0) {
-            null
+            throw IllegalArgumentException("Either overload onCreateContentView(), or provide content fragment / resId.")
         } else {
             layoutInflater.inflate(resInt, container, false)
         }
@@ -62,6 +61,11 @@ open class CollapsingToolbarBaseFragment(val fragment: Fragment? = null) : Fragm
         super.onViewCreated(view, savedInstanceState)
         binding?.let {
             (requireActivity() as AppCompatActivity).setSupportActionBar(it.snowUIToolbar)
+        }
+        contentFragment?.let {
+            val fragmentManager = childFragmentManager
+            fragmentManager.beginTransaction().replace(R.id.snowUIFrameLayout, it, "content")
+                .commit()
         }
     }
 
