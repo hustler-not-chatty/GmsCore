@@ -24,6 +24,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-service:$lifecycleVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation project(":hz_snow_ui_lib")
 }
 
 android {

@@ -40,5 +40,8 @@ android {
 dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
+
+    implementation project(":hz_snow_ui_lib")
+    implementation project(":play-services-base-core-ui")
 }
 
