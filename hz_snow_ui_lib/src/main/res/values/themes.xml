@@ -20,7 +20,7 @@
         <item name="collapsingToolbarLayoutLargeSize">@dimen/settingslib_toolbar_layout_height</item>
     </style>
 
-    <style name="SnowUI.SettingsBase" parent="SnowUI.Base">
+    <style name="SnowUI.SettingsBasePre21" parent="SnowUI.Base">
         <item name="android:textAppearanceListItem">
             @style/TextAppearance.PreferenceTitle.SettingsLib
         </item>
@@ -33,17 +33,15 @@
 
         <item name="alertDialogTheme">@style/SnowUI.SettingsBase.AlertDialogTheme</item>
         <item name="switchStyle">@style/SnowUI.SettingsBase.SwitchStyle</item>
+
     </style>
+
+    <style name="SnowUI.SettingsBase" parent="SnowUI.SettingsBasePre21" />
+
     <style name="SnowUI.SettingsBase.NoActionBar" parent="SnowUI.SettingsBase">
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-
-    <public name="SnowUI.Base" type="style" />
-    <public name="SnowUI.Base.NoActionBar" type="style" />
-    <public name="SnowUI.CollapsingToolbar" type="style" />
-    <public name="SnowUI.SettingsBase" type="style" />
-    <public name="SnowUI.SettingsBase.NoActionBar" type="style"/>
 </resources>

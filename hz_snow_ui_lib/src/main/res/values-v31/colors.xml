@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="switch_thumb_disabled">@color/material_dynamic_neutral_variant90</color>
+    <color name="switch_thumb_off">@color/material_dynamic_neutral_variant30</color>
+    <color name="switch_thumb_on">@color/material_dynamic_primary90</color>
+    <color name="switch_track_disabled">@color/material_dynamic_neutral_variant50</color>
+    <color name="switch_track_off">@color/material_dynamic_neutral_variant50</color>
+    <color name="switch_track_on" android:lStar="51">@color/material_dynamic_secondary50</color>
+</resources>

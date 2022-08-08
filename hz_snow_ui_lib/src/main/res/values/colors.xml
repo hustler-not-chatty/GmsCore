@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="switch_thumb_disabled">@color/m3_ref_palette_neutral_variant90</color>
+    <color name="switch_thumb_off">@color/m3_ref_palette_neutral_variant30</color>
+    <color name="switch_thumb_on">@color/m3_ref_palette_primary90</color>
+    <color name="switch_track_disabled">@color/m3_ref_palette_neutral_variant50</color>
+    <color name="switch_track_off">@color/m3_ref_palette_neutral_variant50</color>
+    <color name="switch_track_on">@color/m3_ref_palette_secondary50</color>
+</resources>

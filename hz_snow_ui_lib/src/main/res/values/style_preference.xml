@@ -59,4 +59,31 @@
     <style name="SettingsSeekbarPreference.SettingsLib" parent="@style/Preference.SeekBarPreference.Material">
         <item name="iconSpaceReserved">@bool/settingslib_config_icon_space_reserved</item>
     </style>
+
+    <style name="SnowUI.SettingsBase.MainSwitchText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="SnowUI.SettingsBase.AlertDialogTheme" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+        <item name="dialogCornerRadius">@dimen/alert_dialog_round_corner_radius</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:clipToPadding">true</item>
+        <item name="android:clipChildren">true</item>
+    </style>
+
+    <style name="SnowUI.SettingsBase.TextAppearance.None" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0sp</item>
+    </style>
+
+    <style name="SnowUI.SettingsBase.SwitchStyle" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="android:switchMinWidth">52dp</item>
+        <item name="minHeight">48dp</item>
+
+        <item name="android:track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+        <item name="android:switchTextAppearance">@style/SnowUI.SettingsBase.TextAppearance.None
+        </item>
+        <item name="track">@drawable/switch_track</item>
+    </style>
 </resources>

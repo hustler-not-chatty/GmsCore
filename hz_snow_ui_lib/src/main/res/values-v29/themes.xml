@@ -7,5 +7,4 @@
 
     <style name="SnowUI.Base" parent="SnowUI.BaseAbove29" />
 
-    <public name="SnowUI.Base" type="style" />
 </resources>

@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="SnowUI.BaseAbove21" parent="SnowUI.BasePre21">
         <!-- Transparent system bars for edge-to-edge. -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
     <style name="SnowUI.Base" parent="SnowUI.BaseAbove21" />
+
+    <style name="SnowUI.SettingsBaseAbove21" parent="SnowUI.SettingsBasePre21">
+        <item name="android:switchStyle">@style/SnowUI.SettingsBase.SwitchStyle</item>
+    </style>
+
+    <style name="SnowUI.SettingsBase" parent="SnowUI.SettingsBaseAbove21" />
 
     <public name="SnowUI.Base" type="style" />
 </resources>

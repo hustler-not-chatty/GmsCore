@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="SnowUI.Base" type="style" />
+    <public name="SnowUI.Base.NoActionBar" type="style" />
+    <public name="SnowUI.CollapsingToolbar" type="style" />
+    <public name="SnowUI.SettingsBase" type="style" />
+    <public name="SnowUI.SettingsBase.NoActionBar" type="style" />
+</resources>
