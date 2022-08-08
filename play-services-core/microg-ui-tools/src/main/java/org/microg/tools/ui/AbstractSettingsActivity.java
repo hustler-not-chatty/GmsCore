@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public abstract class AbstractSettingsActivity extends AppCompatActivity {
+import hz.snow_ui_lib.collapsing_toolbar.CollapsingToolbarBaseActivity;
+
+public abstract class AbstractSettingsActivity extends CollapsingToolbarBaseActivity {
     protected boolean showHomeAsUp = false;
     protected int preferencesResource = 0;
     private ViewGroup customBarContainer;
