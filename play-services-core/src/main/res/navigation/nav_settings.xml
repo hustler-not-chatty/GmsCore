@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="org.microg.gms.ui.SettingsFragment"
+        android:name="org.microg.gms.ui.Entries$SettingsFragment"
         android:label="@string/gms_settings_name">
         <action
             android:id="@+id/openUnifiedNlpSettings"
@@ -37,16 +37,16 @@
 
     <fragment
         android:id="@+id/selfcheckFragment"
-        android:name="org.microg.gms.ui.SelfCheckFragment"
+        android:name="org.microg.gms.ui.Entries$SelfCheckFragment"
         android:label="@string/self_check_title" />
     <fragment
         android:id="@+id/checkinFragment"
-        android:name="org.microg.gms.ui.DeviceRegistrationFragment"
+        android:name="org.microg.gms.ui.Entries$DeviceRegistrationFragment"
         android:label="@string/service_name_checkin"
         tools:layout="@layout/device_registration_fragment" />
     <fragment
         android:id="@+id/gcmFragment"
-        android:name="org.microg.gms.ui.PushNotificationFragment"
+        android:name="org.microg.gms.ui.Entries$PushNotificationFragment"
         android:label="@string/service_name_mcs"
         tools:layout="@layout/push_notification_fragment">
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/gcmAllAppsFragment"
-        android:name="org.microg.gms.ui.PushNotificationAllAppsFragment"
+        android:name="org.microg.gms.ui.Entries$PushNotificationAllAppsFragment"
         android:label="@string/prefcat_push_apps_title">
         <action
             android:id="@+id/openGcmAppDetailsFromAll"
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/gcmAppFragment"
-        android:name="org.microg.gms.ui.PushNotificationAppFragment"
+        android:name="org.microg.gms.ui.Entries$PushNotificationAppFragment"
         android:label="@string/service_name_mcs"
         tools:layout="@layout/push_notification_app_fragment">
         <argument
@@ -78,11 +78,11 @@
     </fragment>
     <fragment
         android:id="@+id/gcmAdvancedFragment"
-        android:name="org.microg.gms.ui.PushNotificationAdvancedFragment"
+        android:name="org.microg.gms.ui.Entries$PushNotificationAdvancedFragment"
         android:label="@string/service_name_mcs" />
     <fragment
         android:id="@+id/safetyNetFragment"
-        android:name="org.microg.gms.ui.SafetyNetFragment"
+        android:name="org.microg.gms.ui.Entries$SafetyNetFragment"
         android:label="@string/service_name_snet"
         tools:layout="@layout/safety_net_fragment">
         <action
@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/safetyNetAdvancedFragment"
-        android:name="org.microg.gms.ui.SafetyNetAdvancedFragment"
+        android:name="org.microg.gms.ui.Entries$SafetyNetAdvancedFragment"
         android:label="@string/service_name_snet" />
 
     <fragment
@@ -104,7 +104,7 @@
 
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="org.microg.gms.ui.AboutFragment"
+        android:name="org.microg.gms.ui.Entries$AboutFragment"
         android:label="@string/prefcat_about"
         tools:layout="@layout/about_root" />
 </navigation>

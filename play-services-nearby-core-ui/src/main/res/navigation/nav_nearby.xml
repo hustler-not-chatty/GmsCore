@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/exposureNotificationsFragment"
-        android:name="org.microg.gms.nearby.core.ui.ExposureNotificationsFragment"
+        android:name="org.microg.gms.nearby.core.ui.Entries$ExposureNotificationsFragment"
         android:label="@string/service_name_exposure"
         tools:layout="@layout/exposure_notifications_fragment">
         <deepLink
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/exposureNotificationsRpisFragment"
-        android:name="org.microg.gms.nearby.core.ui.ExposureNotificationsRpisFragment"
+        android:name="org.microg.gms.nearby.core.ui.Entries$ExposureNotificationsRpisFragment"
         android:label="@string/pref_exposure_collected_rpis_title">
         <deepLink
             app:action="ACTION_VIEW"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/exposureNotificationsAppFragment"
-        android:name="org.microg.gms.nearby.core.ui.ExposureNotificationsAppFragment"
+        android:name="org.microg.gms.nearby.core.ui.Entries$ExposureNotificationsAppFragment"
         android:label="@string/service_name_exposure"
         tools:layout="@layout/exposure_notifications_app_fragment">
         <argument
