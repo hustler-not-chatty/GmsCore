@@ -14,9 +14,7 @@
         <item name="footerPreferenceStyle">@style/Preference.Material</item>
 -->
     </style>
-    <style name="TextAppearance.PreferenceTitle.SettingsLib"
-        parent="TextAppearance.AppCompat.Subhead">
-        <item name="android:fontFamily">sans-serif</item>
+    <style name="TextAppearance.PreferenceTitle.SettingsLib" parent="@style/TextAppearance.MaterialComponents.Headline5">
         <item name="android:textSize">20sp</item>
     </style>
     <style name="TextAppearance.CategoryTitle.SettingsLib"
@@ -60,7 +58,7 @@
         <item name="iconSpaceReserved">@bool/settingslib_config_icon_space_reserved</item>
     </style>
 
-    <style name="SnowUI.SettingsBase.MainSwitchText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+    <style name="SnowUI.SettingsBase.MainSwitchText" parent="@style/TextAppearance.Material3.ActionBar.Title">
         <item name="android:textSize">20sp</item>
     </style>
 
