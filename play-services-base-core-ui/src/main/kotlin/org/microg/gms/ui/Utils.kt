@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
@@ -22,6 +23,7 @@ import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
 import androidx.navigation.ui.R
+import com.google.android.material.card.MaterialCardView
 
 fun PackageManager.getApplicationInfoIfExists(packageName: String?, flags: Int = 0): ApplicationInfo? = packageName?.let {
     try {
@@ -67,4 +69,13 @@ fun Context.resolveColor(@AttrRes resid: Int): Int? {
 }
 
 @BindingAdapter("app:backgroundColorAttr")
-fun View.setBackgroundColorAttribute(@AttrRes resId: Int) = context.resolveColor(resId)?.let { setBackgroundColor(it) }
+fun View.setBackgroundColorAttribute(@AttrRes resId: Int) =
+    context.resolveColor(resId)?.let { setBackgroundColor(it) }
+
+@BindingAdapter("hz:cardBackgroundColorAttr")
+fun MaterialCardView.setCardBackgroundColorAttribute(@AttrRes resId: Int) =
+    context.resolveColor(resId)?.let { setCardBackgroundColor(it) }
+
+@BindingAdapter("hz:textColorAttr")
+fun TextView.setTextColorAttribute(@AttrRes resId: Int) =
+    context.resolveColor(resId)?.let { setTextColor(it) }
