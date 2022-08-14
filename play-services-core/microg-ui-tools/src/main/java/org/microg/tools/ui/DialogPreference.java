@@ -69,7 +69,7 @@ public class DialogPreference extends androidx.preference.DialogPreference imple
     public boolean onPreferenceDisplayDialog(PreferenceFragmentCompat caller, Preference pref) {
         DialogPreferenceCompatDialogFragment fragment = new DialogPreferenceCompatDialogFragment();
         fragment.setTargetFragment(caller, 0);
-        fragment.show(caller.getFragmentManager(), DIALOG_FRAGMENT_TAG);
+        fragment.show(caller.getParentFragmentManager(), DIALOG_FRAGMENT_TAG);
         return true;
     }
 
