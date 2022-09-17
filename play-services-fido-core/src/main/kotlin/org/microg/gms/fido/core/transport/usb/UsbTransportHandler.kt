@@ -14,24 +14,24 @@ import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbInterface
 import android.hardware.usb.UsbManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.gms.fido.fido2.api.common.*
+import com.upokecenter.cbor.CBORObject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import org.microg.gms.fido.core.*
-import org.microg.gms.fido.core.protocol.AttestedCredentialData
-import org.microg.gms.fido.core.protocol.AuthenticatorData
-import org.microg.gms.fido.core.protocol.CoseKey
-import org.microg.gms.fido.core.protocol.FidoU2fAttestationObject
-import org.microg.gms.fido.core.protocol.msgs.U2fAuthenticationCommand
-import org.microg.gms.fido.core.protocol.msgs.U2fRegistrationCommand
+import org.microg.gms.fido.core.protocol.*
+import org.microg.gms.fido.core.protocol.msgs.*
+import org.microg.gms.fido.core.transport.CtapConnection
 import org.microg.gms.fido.core.transport.Transport
 import org.microg.gms.fido.core.transport.TransportHandler
 import org.microg.gms.fido.core.transport.TransportHandlerCallback
 import org.microg.gms.fido.core.transport.usb.ctaphid.CtapHidConnection
 import org.microg.gms.fido.core.transport.usb.ctaphid.CtapHidMessageStatusException
+import org.microg.gms.utils.toBase64
 
 @RequiresApi(21)
 class UsbTransportHandler(private val context: Context, callback: TransportHandlerCallback? = null) :
@@ -76,76 +76,15 @@ class UsbTransportHandler(private val context: Context, callback: TransportHandl
         return null
     }
 
-    suspend fun deviceHasCredential(
-        connection: CtapHidConnection,
-        challenge: ByteArray,
-        application: ByteArray,
-        descriptor: PublicKeyCredentialDescriptor
-    ): Boolean {
-        try {
-            connection.runCommand(U2fAuthenticationCommand(0x07, challenge, application, descriptor.id))
-            return true
-        } catch (e: CtapHidMessageStatusException) {
-            return false
-        }
-    }
-
     suspend fun register(
         options: RequestOptions,
         callerPackage: String,
         device: UsbDevice,
         iface: UsbInterface
     ): AuthenticatorAttestationResponse {
-        val (response, clientData) = CtapHidConnection(context, device, iface).open {
-            if (it.hasCtap2Support) {
-                // Not yet supported on our side
-            }
-            if (it.hasCtap1Support) {
-                val rpIdHash = options.rpId.toByteArray().digest("SHA-256")
-                val (clientData, clientDataHash) = getClientDataAndHash(context, options, callerPackage)
-                if (!options.registerOptions.parameters.isNullOrEmpty() && options.registerOptions.parameters.all { it.algorithmIdAsInteger != -7 }) throw IllegalArgumentException(
-                    "Can't use CTAP1 protocol for non ES256 requests"
-                )
-                if (options.registerOptions.authenticatorSelection.requireResidentKey == true) throw IllegalArgumentException("Can't use CTAP1 protocol when resident key required")
-                val hasCredential = options.registerOptions.excludeList.any { cred ->
-                    deviceHasCredential(it, clientDataHash, rpIdHash, cred)
-                }
-                while (true) {
-                    try {
-                        val response = it.runCommand(U2fRegistrationCommand(clientDataHash, rpIdHash)) to clientData
-                        if (hasCredential) throw RequestHandlingException(
-                            ErrorCode.NOT_ALLOWED_ERR,
-                            "An excluded credential has already been registered with the device"
-                        )
-                        return@open response
-                    } catch (e: CtapHidMessageStatusException) {
-                        if (e.status != 0x6985.toShort()) {
-                            throw e
-                        }
-                    }
-                    delay(100)
-                }
-            }
-            throw IllegalStateException()
+        return CtapHidConnection(context, device, iface).open {
+            register(it, context, options, callerPackage)
         }
-        require(response.userPublicKey[0] == 0x04.toByte())
-        val coseKey = CoseKey(
-            EC2Algorithm.ES256,
-            response.userPublicKey.sliceArray(1 until 33),
-            response.userPublicKey.sliceArray(33 until 65),
-            1
-        )
-        val credentialData =
-            AttestedCredentialData(ByteArray(16), response.keyHandle, coseKey.encode())
-        val authData = AuthenticatorData(options.rpId.toByteArray().digest("SHA-256"), true, false, 0, credentialData)
-        val attestationObject =
-            FidoU2fAttestationObject(authData, response.signature, response.attestationCertificate)
-
-        return AuthenticatorAttestationResponse(
-            response.keyHandle,
-            clientData,
-            attestationObject.encode()
-        )
     }
 
     suspend fun sign(
@@ -154,48 +93,9 @@ class UsbTransportHandler(private val context: Context, callback: TransportHandl
         device: UsbDevice,
         iface: UsbInterface
     ): AuthenticatorAssertionResponse {
-        val (response, clientData, credentialId) = CtapHidConnection(context, device, iface).open {
-            if (it.hasCtap2Support) {
-                // Not yet supported on our side
-            }
-            if (it.hasCtap1Support) {
-                val rpIdHash = options.rpId.toByteArray().digest("SHA-256")
-                val (clientData, clientDataHash) = getClientDataAndHash(context, options, callerPackage)
-                val cred = options.signOptions.allowList.firstOrNull { cred ->
-                    deviceHasCredential(it, clientDataHash, rpIdHash, cred)
-                } ?: options.signOptions.allowList.first()
-
-                while (true) {
-                    try {
-                        return@open Triple(
-                            it.runCommand(
-                                U2fAuthenticationCommand(0x03, clientDataHash, rpIdHash, cred.id)
-                            ), clientData, cred.id
-                        )
-                    } catch (e: CtapHidMessageStatusException) {
-                        if (e.status != 0x6985.toShort()) {
-                            throw e
-                        }
-                        delay(100)
-                    }
-                }
-            }
-            throw IllegalStateException()
+        return CtapHidConnection(context, device, iface).open {
+            sign(it, context, options, callerPackage)
         }
-        val authData = AuthenticatorData(
-            options.rpId.toByteArray().digest("SHA-256"),
-            response.userPresence,
-            false,
-            response.counter
-        )
-
-        return AuthenticatorAssertionResponse(
-            credentialId,
-            clientData,
-            authData.encode(),
-            response.signature,
-            null
-        )
     }
 
     private suspend fun waitForNewUsbDevice(): UsbDevice {
@@ -209,7 +109,9 @@ class UsbTransportHandler(private val context: Context, callback: TransportHandl
         }
         context.registerReceiver(receiver, IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED))
         invokeStatusChanged(TransportHandlerCallback.STATUS_WAITING_FOR_DEVICE)
-        return deferred.await()
+        val device = deferred.await()
+        context.unregisterReceiver(receiver)
+        return device
     }
 
     suspend fun handle(

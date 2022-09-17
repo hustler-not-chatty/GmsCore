@@ -13,6 +13,8 @@ dependencies {
     api project(':play-services-fido-api')
 
     implementation project(':play-services-base-core')
+    implementation project(':play-services-safetynet')
+    implementation project(':play-services-tasks-ktx')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
@@ -29,6 +31,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     implementation 'com.upokecenter:cbor:4.5.2'
+    implementation 'com.google.guava:guava:31.1-android'
 }
 
 android {
