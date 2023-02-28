@@ -22,9 +22,9 @@ android {
     compileSdkVersion androidCompileSdk
     buildToolsVersion "$androidBuildVersionTools"
 
-    aidlPackageWhiteList "com/google/android/gms/common/data/DataHolder.aidl"
-    aidlPackageWhiteList "com/google/android/gms/common/images/WebImage.aidl"
-    aidlPackageWhiteList "com/google/android/gms/common/api/internal/IStatusCallback.aidl"
+    aidlPackagedList "com/google/android/gms/common/data/DataHolder.aidl"
+    aidlPackagedList "com/google/android/gms/common/images/WebImage.aidl"
+    aidlPackagedList "com/google/android/gms/common/api/internal/IStatusCallback.aidl"
 
     defaultConfig {
         versionName version
@@ -44,9 +44,9 @@ description = 'microG implementation of play-services-base'
 
 dependencies {
     // Dependencies from play-services-base:18.1.0
-    api "androidx.collection:collection:1.0.0"
-    api "androidx.core:core:1.2.0"
-    api "androidx.fragment:fragment:1.0.0"
+    api "androidx.collection:collection:$collectionVersion"
+    api "androidx.core:core:$coreVersion"
+    api "androidx.fragment:fragment:$fragmentVersion"
     api project(':play-services-basement')
     api project(':play-services-tasks')
 }
